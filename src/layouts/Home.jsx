@@ -10,23 +10,33 @@ const Home = () => {
     return (
         <div>
             <header>
-                <Header></Header>
-                 <section className='w-11/12 mx-auto my-5'>
-                        <BreakingNews></BreakingNews>
-                    </section>
-                    <nav className='w-11/12 mx-auto my-5'>
-                        <Navbar >    </Navbar>
-                    </nav>
+                <Header />
+                <section className='w-11/12 mx-auto my-5'>
+                    <BreakingNews />
+                </section>
+                <nav className='w-11/12 mx-auto my-5'>
+                    <Navbar />
+                </nav>
             </header>
-            <main className='w-11/12 mx-auto my-3 grid grid-cols-12'>
+
+           
+            <main className='w-11/12 mx-auto my-3 grid grid-cols-12 min-h-screen gap-6'>
+                
                 <aside className='col-span-3'>
-                    <LeftAside></LeftAside>
+                    <div className='sticky top-24 h-[calc(100vh-6rem)] overflow-auto'>
+                        <LeftAside />
+                    </div>
                 </aside>
-            <section className='main col-span-6'>
-                <Outlet></Outlet>
-            </section>
-            <aside className='col-span-3'>
-                    <RightAside></RightAside>
+
+                <section className='main col-span-6'>
+                    <Outlet />
+                </section>
+
+                {/* right aside */}
+                <aside className='col-span-3'>
+                    <div className='sticky top-24 h-[calc(100vh-6rem)] overflow-auto'>
+                        <RightAside />
+                    </div>
                 </aside>
             </main>
         </div>
