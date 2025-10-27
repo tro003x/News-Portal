@@ -49,7 +49,7 @@ const SignIn = () => {
             <button type="submit" className="w-full bg-gray-800 text-white py-2 rounded mt-4">Sign In</button>
 
             <p className="text-center text-sm text-gray-600 mt-3">
-              Don't Have An Account ? <a className="text-red-600"> <Link to = '/auth/signup'>Sign Up</Link></a>
+              Don't Have An Account ? <a className="text-red-600"> <Link to = '/auth/signup'>Create Account</Link></a>
             </p>
           </form>
         </div>
