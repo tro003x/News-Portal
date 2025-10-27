@@ -8,7 +8,7 @@ const SignUp = () => {
 
     const { createUser, setUser } = useContext(AuthContext) || {};
   const [show, setShow] = useState(false);
-//   const { setUser } = useContext(AuthContext) || {};
+
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -30,12 +30,12 @@ const SignUp = () => {
     try {
       if (createUser) {
   const result = await createUser(email, password);
-  // log firebase user for debugging
+  
   console.log('firebase createUser result:', result?.user);
-  // set a lightweight user object in context
+ 
   if (setUser) setUser({ name: fullName || email, email, photoURL });
       } else {
-        // fallback: set user in-memory if no firebase createUser provided
+        
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       }
       console.log("Signed up:", { fullName, email, photoURL });

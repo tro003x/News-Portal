@@ -4,7 +4,7 @@ import userIcon from '../assets/user.png'
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const Navbar = () => {
-    const { user, setUser } = useContext(AuthContext) || {};
+    const { user, setUser, logOut } = useContext(AuthContext) || {};
     return (
         <div className='flex items-center'>
             
@@ -25,7 +25,21 @@ const Navbar = () => {
                     <div className="flex items-center gap-3">
                         {user.name && <span className="text-sm font-medium">Hi, {user.name}</span>}
                         <button
-                            onClick={() => setUser ? setUser(null) : null}
+                            onClick={async () => {
+                                if (typeof logOut === 'function') {
+                                    try {
+                                        await logOut();
+                                        window.alert('Successfully logged out');
+                                    } catch (err) {
+                                        window.alert('Logout failed: ' + (err?.message || err));
+                                    }
+                                } else if (typeof setUser === 'function') {
+                                    setUser(null);
+                                    window.alert('Successfully logged out');
+                                } else {
+                                    window.alert('No logout method available.');
+                                }
+                            }}
                             className="btn btn-primary px-10"
                         >
                             Sign Out

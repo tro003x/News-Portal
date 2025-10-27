@@ -60,7 +60,7 @@ const NewsCard = ({ news }) => {
                     <p className="text-sm text-gray-600 mt-2">
                         {details.length > 220 ? details.slice(0, 220) + '...' : details}
                         {details.length > 220 && (
-                            <Link to={`/news/${news._id || ''}`} className="text-red-500 ml-1">
+                            <Link to={`/news/${news.id || news._id || ''}`} className="text-red-500 ml-1">
                                 Read More
                             </Link>
                         )}
