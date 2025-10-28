@@ -22,3 +22,8 @@
 a.active{
     @apply bg-base-300
 }
+
+/* Prevent horizontal overflow on small devices caused by fixed widths */
+html, body, #root {
+  overflow-x: hidden;
+}

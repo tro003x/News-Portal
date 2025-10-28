@@ -87,7 +87,7 @@ const NewsCard = ({ news }) => {
             </div>
 
             {/* body: text + image */}
-            <div className="flex gap-4 mt-4">
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
                 <div className="flex-1">
                     <h3 className="text-lg font-bold text-gray-800">{title}</h3>
                     <p className="text-sm text-gray-600 mt-2">
@@ -115,8 +115,8 @@ const NewsCard = ({ news }) => {
                     </div>
                 </div>
 
-                <div className="w-44 shrink-0">
-                    <img src={image} alt={title} className="w-full h-32 object-cover rounded" />
+                <div className="md:w-44 w-full md:shrink-0">
+                    <img src={image} alt={title} className="w-full md:h-32 h-48 object-cover rounded" />
                 </div>
             </div>
         </article>
