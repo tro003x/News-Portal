@@ -1,9 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../AuthProvider/AuthProvider";
+import { toast } from 'react-toastify';
 
 const SignIn = () => {
   const [show, setShow] = useState(false);
+  const { setUser } = useContext(AuthContext) || {};
+  const navigate = useNavigate();
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const email = fd.get('email') || '';
+    const fullName = email.split('@')[0];
+    const seed = encodeURIComponent(email.toLowerCase().trim() || fullName || Date.now());
+    const photoURL = `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
+    if (setUser) setUser({ name: fullName, email, photoURL });
+    toast.success('Signed in successfully');
+    navigate('/');
+  };
   return (
     <div className="min-h-screen bg-gray-100 flex items-start justify-center py-12">
       <div className="w-full max-w-lg">
@@ -14,7 +30,7 @@ const SignIn = () => {
         <div className="bg-white rounded-md shadow p-8">
           <hr className="border-t border-gray-200 mb-6" />
 
-          <form className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4">
             <div>
               <label className="text-sm font-medium text-gray-700">Email address</label>
               <input

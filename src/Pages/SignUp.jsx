@@ -1,14 +1,17 @@
 import React, { useState, useContext } from "react";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
 
     const { createUser, setUser } = useContext(AuthContext) || {};
   const [show, setShow] = useState(false);
 
+
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -29,16 +32,14 @@ const SignUp = () => {
 
     try {
       if (createUser) {
-  const result = await createUser(email, password);
-  
-  console.log('firebase createUser result:', result?.user);
- 
-  if (setUser) setUser({ name: fullName || email, email, photoURL });
+        const result = await createUser(email, password);
+        console.log('firebase createUser result:', result?.user);
+        if (setUser) setUser({ name: fullName || email, email, photoURL });
       } else {
-        
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       }
-      console.log("Signed up:", { fullName, email, photoURL });
+      toast.success('Signed up successfully');
+      navigate('/');
     } catch (err) {
       console.error(err);
       alert(err.message || "Sign up failed");

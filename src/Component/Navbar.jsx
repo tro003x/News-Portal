@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router';
 import userIcon from '../assets/user.png'
 import { AuthContext } from '../AuthProvider/AuthProvider';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     const { user, setUser, logOut } = useContext(AuthContext) || {};
@@ -29,15 +30,15 @@ const Navbar = () => {
                                 if (typeof logOut === 'function') {
                                     try {
                                         await logOut();
-                                        window.alert('Successfully logged out');
+                                        toast.success('Successfully logged out');
                                     } catch (err) {
-                                        window.alert('Logout failed: ' + (err?.message || err));
+                                        toast.error('Logout failed: ' + (err?.message || err));
                                     }
                                 } else if (typeof setUser === 'function') {
                                     setUser(null);
-                                    window.alert('Successfully logged out');
+                                    toast.success('Successfully logged out');
                                 } else {
-                                    window.alert('No logout method available.');
+                                    toast.info('No logout method available.');
                                 }
                             }}
                             className="btn btn-primary px-10"

@@ -1,12 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, Link, useNavigate } from 'react-router';
+import { AuthContext } from '../AuthProvider/AuthProvider';
+import { toast } from 'react-toastify';
 
 const NewsDetails = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { user, loading: authLoading } = useContext(AuthContext) || {};
+  const navigate = useNavigate();
+
   useEffect(() => {
+    // when auth is still initializing, wait
+    if (authLoading) return;
+
+    // if auth finished and user is not signed in, redirect to signin with alert
+    if (!user) {
+      toast.info('Please Sign In to see news details');
+      navigate('/auth/signin');
+      return;
+    }
+
     let mounted = true;
     setLoading(true);
     fetch('/news.json')
@@ -22,9 +37,14 @@ const NewsDetails = () => {
     return () => {
       mounted = false;
     };
-  }, [id]);
+  }, [id, authLoading, user, navigate]);
 
-  if (loading) return <p>Loading...</p>;
+  if (authLoading || loading)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   if (!article) return (
     <div>
       <p className="text-red-500">Article not found.</p>

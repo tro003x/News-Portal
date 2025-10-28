@@ -1,5 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../AuthProvider/AuthProvider';
+import { toast } from 'react-toastify';
 
 const Star = ({ className = 'w-4 h-4' }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className={className}>
@@ -21,6 +23,9 @@ const Share = ({ className = 'w-5 h-5' }) => (
 );
 
 const NewsCard = ({ news }) => {
+    const navigate = useNavigate();
+    const { user, loading } = useContext(AuthContext) || {};
+
     if (!news) return null;
 
     const author = news.author || {};
@@ -29,6 +34,34 @@ const NewsCard = ({ news }) => {
     const image = news.image_url || news.thumbnail_url || '';
     const views = news.total_view || news.views || 0;
     const rating = (news.rating && news.rating.number) || news.rating || 0;
+
+    const handleReadMore = (id) => {
+        if (loading) {
+            const toastId = 'auth-checking';
+            toast.info('Checking authentication...', { toastId, autoClose: false });
+            const check = setInterval(() => {
+                if (!loading) {
+                    clearInterval(check);
+                    toast.dismiss(toastId);
+                    if (user) {
+                        navigate(`/news/${id}`);
+                    } else {
+                        toast.info('Please Sign In to see news details');
+                        navigate('/auth/signin');
+                    }
+                }
+            }, 200);
+
+            return;
+        }
+
+        if (user) {
+            navigate(`/news/${id}`);
+        } else {
+            toast.info('Please Sign In to see news details');
+            navigate('/auth/signin');
+        }
+    };
 
     return (
         <article className="bg-white shadow-sm rounded-md p-4 mb-6">
@@ -60,9 +93,12 @@ const NewsCard = ({ news }) => {
                     <p className="text-sm text-gray-600 mt-2">
                         {details.length > 220 ? details.slice(0, 220) + '...' : details}
                         {details.length > 220 && (
-                            <Link to={`/news/${news.id || news._id || ''}`} className="text-red-500 ml-1">
+                            <button
+                                className="text-red-500 ml-1 underline"
+                                onClick={() => handleReadMore(news.id || news._id || '')}
+                            >
                                 Read More
-                            </Link>
+                            </button>
                         )}
                     </p>
 
@@ -79,7 +115,7 @@ const NewsCard = ({ news }) => {
                     </div>
                 </div>
 
-                <div className="w-44 flex-shrink-0">
+                <div className="w-44 shrink-0">
                     <img src={image} alt={title} className="w-full h-32 object-cover rounded" />
                 </div>
             </div>
