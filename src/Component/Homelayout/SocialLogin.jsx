@@ -43,10 +43,15 @@ const SocialLogin = () => {
         <div>
             <h2 className='font-bold mb-3'>Sign in With</h2>
             <div className='space-y-3'>
-                <button onClick={handleGoogle} disabled={working} className='btn btn-outline btn-primary w-full'>
+                                <button onClick={handleGoogle} disabled={working} className='btn btn-outline btn-primary w-full'>
                     <FcGoogle size={24} /> {working ? 'Signing in…' : 'Sign in with Google'}
                 </button>
-                <button className='btn btn-outline btn-primary w-full '> <FaSquareXTwitter size={24} /> Sign in with X</button>
+                                <button
+                                    className='btn btn-outline btn-primary w-full'
+                                    onClick={() => toast.info("It's still under construction. Please try again later")}
+                                >
+                                    <FaSquareXTwitter size={24} /> Sign in with X
+                                </button>
             </div>
         </div>
     );
