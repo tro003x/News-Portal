@@ -4,10 +4,12 @@ import { FaEye } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { toast } from 'react-toastify';
+import { LoadingContext } from '../contexts/LoadingContext';
 
 const SignUp = () => {
 
     const { createUser, setUser } = useContext(AuthContext) || {};
+    const { showLoading, hideLoading } = useContext(LoadingContext) || {};
   const [show, setShow] = useState(false);
 
 
@@ -16,13 +18,25 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    const firstName = fd.get("firstName") || "";
-    const lastName = fd.get("lastName") || "";
-    const email = fd.get("email") || "";
-    const password = fd.get("password") || "";
+    const firstName = (fd.get("firstName") || "").toString().trim();
+    const lastName = (fd.get("lastName") || "").toString().trim();
+    const email = (fd.get("email") || "").toString().trim();
+    const password = (fd.get("password") || "").toString();
 
+    // basic client-side validation
+    if (!email) {
+      toast.error('Please enter your email');
+      return;
+    }
     if (!password) {
-      alert("Please enter a password");
+      toast.error('Please enter a password');
+      return;
+    }
+
+    // password policy: at least 8 chars, one upper, one lower, one digit, one special
+    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!pwdRegex.test(password)) {
+      toast.error('Password must be at least 8 characters and include upper, lower, number and special char');
       return;
     }
 
@@ -31,9 +45,9 @@ const SignUp = () => {
     const photoURL = `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
 
     try {
+      if (showLoading) showLoading();
       if (createUser) {
-        const result = await createUser(email, password);
-        console.log('firebase createUser result:', result?.user);
+        await createUser(email, password);
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       } else {
         if (setUser) setUser({ name: fullName || email, email, photoURL });
@@ -42,7 +56,9 @@ const SignUp = () => {
       navigate('/');
     } catch (err) {
       console.error(err);
-      alert(err.message || "Sign up failed");
+      toast.error(err?.message || 'Sign up failed');
+    } finally {
+      if (hideLoading) hideLoading();
     }
   };
   return (
@@ -62,7 +78,7 @@ const SignUp = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   First Name
                 </label>
-                <input name="firstName"
+                <input name="firstName" required
                   className="mt-1 block w-full border border-gray-200 rounded px-3 py-2 bg-gray-50"
                   placeholder="John"
                 />
@@ -71,7 +87,7 @@ const SignUp = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Last Name
                 </label>
-                <input name="lastName"
+                <input name="lastName" required
                   className="mt-1 block w-full border border-gray-200 rounded px-3 py-2 bg-gray-50"
                   placeholder="Doe"
                 />
@@ -84,6 +100,7 @@ const SignUp = () => {
               </label>
               <input name="email"
                 type="email"
+                required
                 className="mt-1 block w-full border border-gray-200 rounded px-3 py-2 bg-gray-50"
                 placeholder="john.doe@example.com"
               />
@@ -98,6 +115,7 @@ const SignUp = () => {
               <div className="mt-1 relative">
                 <input name="password"
                   type={show ? "text" : "password"}
+                  required
                   className="block w-full border border-gray-200 rounded px-3 py-2 bg-gray-50"
                   placeholder="Enter your password"
                 />

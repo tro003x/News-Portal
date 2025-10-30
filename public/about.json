@@ -1,0 +1,18 @@
+{
+  "company": "Dragon News",
+  "title": "About Dragon News",
+  "subtitle": "Delivering trusted local and global news",
+  "description": "Dragon News is an independent news portal focused on timely, accurate coverage across technology, business, and culture. We aim to empower readers with balanced journalism and useful context.",
+  "overview": [
+    "Dragon News was founded in 2025 with a mission to provide accurate, timely, and impartial news coverage for our readers.",
+    "We focus on local reporting, investigative journalism, and thoughtful analysis across politics, business, technology, sports, and culture.",
+    "Our small editorial team combines experienced reporters with data-driven newsroom tools to surface stories that matter to communities."
+  ],
+  "mission": "To inform, engage, and empower readers by delivering news that is reliable, accessible, and independent.",
+  "vision": "A better-informed public and a stronger civic conversation.",
+  "team": [
+    { "name": "Aurito", "role": "Editor-in-Chief", "bio": "A journalist with 10+ years of experience in investigative reporting." },
+    { "name": "Bin", "role": "Head of Digital", "bio": "Leads our digital product and audience engagement initiatives." },
+    { "name": "Islam", "role": "Managing Editor", "bio": "Oversees daily operations and editorial standards." }
+  ]
+}

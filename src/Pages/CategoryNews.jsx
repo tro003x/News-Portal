@@ -16,8 +16,7 @@ const CategoryNews = () => {
       );
       setCategoryNews(filteredNews);
     } else {
-      const filteredNews = data.filter((news) => news.category_id == id);
-      console.log(filteredNews);
+  const filteredNews = data.filter((news) => news.category_id == id);
       setCategoryNews(filteredNews);
     }
   }, [data, id]);

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "b1",
+    "title": "How to grow your career in Tech in 2025",
+    "author": "Ayesha Rahman",
+    "date": "2025-06-12",
+    "excerpt": "Practical steps to upskill, network and build portfolio projects that employers notice.",
+    "details": "Start with a focused learning plan, contribute to open source, and learn how to show impact in interviews. Build 3 portfolio projects, write about them, and practice system design basics.",
+    "tags": ["career","tech","growth"]
+  },
+  {
+    "id": "b2",
+    "title": "Remote Work Best Practices",
+    "author": "Md. Karim",
+    "date": "2025-03-03",
+    "excerpt": "Stay productive and connected while working remotely with these simple habits.",
+    "details": "Create a daily ritual, design a focused workspace, and use async-first communication. Track outcomes, not hours.",
+    "tags": ["remote","productivity"]
+  },
+  {
+    "id": "b3",
+    "title": "Interview Prep: Top 10 Frontend Questions",
+    "author": "Sara Ahmed",
+    "date": "2025-01-20",
+    "excerpt": "A concise list of frontend interview topics every candidate should know.",
+    "details": "Brush up on JS fundamentals, rendering performance, accessibility, component patterns, and testing. Practice small coding challenges under time pressure.",
+    "tags": ["interview","frontend","javascript"]
+  },
+  {
+    "id": "career-1",
+    "title": "How to Build a Strong Tech Career in 2025",
+    "excerpt": "Practical tips for developers who want to level up their skills and find meaningful jobs.",
+    "author": "Sajid Khan",
+    "date": "2025-06-12",
+    "tags": ["career","tech","tips"],
+    "details": "Start by mastering fundamentals, build side projects, contribute to open source, and practice system design interviews. Focus on communication and domain knowledge to stand out. Network strategically and keep a small portfolio of high-quality projects."
+  },
+  {
+    "id": "career-2",
+    "title": "Remote Work: Finding and Thriving in Distributed Teams",
+    "excerpt": "Remote jobs are here to stay — here's how to succeed in asynchronous teams.",
+    "author": "Lina Das",
+    "date": "2025-03-09",
+    "tags": ["remote","career","productivity"],
+    "details": "Set clear work boundaries, document decisions, invest in communication tools, and learn to write effective asynchronous updates. Build trust by over-communicating early and delivering predictable outcomes."
+  },
+  {
+    "id": "career-3",
+    "title": "From Bootcamp to Full-Time: A Realistic Roadmap",
+    "excerpt": "A step-by-step plan to go from coding bootcamp graduate to a full-time engineering role.",
+    "author": "Rashid Khan",
+    "date": "2024-11-20",
+    "tags": ["bootcamp","hiring","career"],
+    "details": "Focus on fundamentals, contribute to open-source, prepare for behavioral interviews, and work with mentors to iterate on interview performance. Tailor your resume and projects to the roles you're targeting."
+  }
+]
