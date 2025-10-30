@@ -84,7 +84,7 @@ const SignIn = () => {
       } else {
         toast.error(err.message || 'Sign in failed');
       }
-      console.error(err);
+  if (import.meta.env.DEV) console.error(err);
     } finally {
       if (hideLoading) hideLoading();
       setChecking(false);

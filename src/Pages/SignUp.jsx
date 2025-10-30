@@ -62,7 +62,7 @@ const SignUp = () => {
         }
       } catch (ve) {
         // non-fatal
-        console.warn('sendEmailVerification failed', ve);
+        if (import.meta.env.DEV) console.warn('sendEmailVerification failed', ve);
       }
 
       // Prevent access until email is verified: sign out and redirect to sign-in
@@ -70,7 +70,7 @@ const SignUp = () => {
       toast.success('Signed up successfully. Please verify your email to continue.');
       navigate('/auth/signin');
     } catch (err) {
-      console.error(err);
+      if (import.meta.env.DEV) console.error(err);
       toast.error(err?.message || 'Sign up failed');
     } finally {
       if (hideLoading) hideLoading();

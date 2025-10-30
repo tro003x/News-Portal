@@ -147,7 +147,7 @@ const AuthProvider = ({ children }) => {
                 if (auth) {
                     const firebaseImpl = await makeFirebaseImpl(auth);
                     setImpl(firebaseImpl);
-                    console.info('[Auth] Using local Firebase/firebase.config.js');
+                    if (import.meta.env.DEV) console.info('[Auth] Using local Firebase/firebase.config.js');
                     unsub = firebaseImpl.onAuthStateChanged((u) => {
                         // Gate access until email is verified
                         if (u && u.emailVerified === false) {
@@ -174,7 +174,7 @@ const AuthProvider = ({ children }) => {
                         const auth = getAuth(app);
                         const firebaseImpl = await makeFirebaseImpl(auth);
                         setImpl(firebaseImpl);
-                        console.info('[Auth] Using firebase-config.json');
+                        if (import.meta.env.DEV) console.info('[Auth] Using firebase-config.json');
                         unsub = firebaseImpl.onAuthStateChanged((u) => {
                             if (u && u.emailVerified === false) {
                                 setUser(null);
@@ -205,7 +205,7 @@ const AuthProvider = ({ children }) => {
                     const auth = getAuth(app);
                     const firebaseImpl = await makeFirebaseImpl(auth);
                     setImpl(firebaseImpl);
-                    console.info('[Auth] Using env-based Firebase config');
+                    if (import.meta.env.DEV) console.info('[Auth] Using env-based Firebase config');
                     unsub = firebaseImpl.onAuthStateChanged((u) => {
                         if (u && u.emailVerified === false) {
                             setUser(null);
@@ -216,14 +216,14 @@ const AuthProvider = ({ children }) => {
                     });
                     return;
                 } catch (err) {
-                    console.warn('Firebase env-based init failed, using stub', err);
+                    if (import.meta.env.DEV) console.warn('Firebase env-based init failed, using stub', err);
                 }
             }
 
             // 4) stub
             const stub = makeStubAuth();
             setImpl(stub);
-            console.info('[Auth] Using in-memory stub auth');
+            if (import.meta.env.DEV) console.info('[Auth] Using in-memory stub auth');
             unsub = stub.onAuthStateChanged((u) => { setUser(u); setLoading(false); });
         };
 
