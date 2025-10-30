@@ -15,6 +15,9 @@ dist-ssr
 # Environment variables
 .env*
 
+# Local Firebase runtime config (kept out of git)
+public/firebase-config.json
+
 
 # Editor directories and files
 .vscode/*

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router';
-import { AuthContext } from '../AuthProvider/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
 const BlogPage = () => {
@@ -46,9 +46,9 @@ const BlogPage = () => {
               </div>
               <button
                 onClick={() => {
-                  // if auth still initialising, do nothing
+                  
                   if (authLoading) return;
-                  // if not logged in redirect to signin and show toast
+                  
                   if (!user) {
                     toast.info('Please Sign In to read the full blog post');
                     navigate('/auth/signin');

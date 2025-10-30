@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router-dom';
 import userIcon from '../assets/user.png'
-import { AuthContext } from '../AuthProvider/AuthProvider';
+import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
 const Navbar = () => {
@@ -9,12 +9,11 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
     return (
         <div className='relative flex items-center'>
-            {/* left: user email on larger screens */}
-            <div className='hidden md:block md:flex-1 text-sm text-gray-600'>{user && user.email}</div>
+            {/* left column intentionally hidden - do not display user email here */}
 
             {/* center: nav links - hidden on small screens */}
-            <div className='flex-1 flex justify-center pl-2 transform -translate-x-4'>
-                <nav className="hidden md:flex nav flex-gap-6 gap-6 text-accent items-center">
+            <div className='flex-1 flex justify-center'>
+                <nav className="hidden md:flex nav gap-6 text-accent items-center justify-center">
                     <NavLink to='/'>Home</NavLink>
                     <NavLink to='/about'>About</NavLink>
                     <NavLink to='/blog'>Blog</NavLink>

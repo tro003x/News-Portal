@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link, useNavigate } from 'react-router';
-import { AuthContext } from '../AuthProvider/AuthProvider';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
 const NewsDetails = () => {

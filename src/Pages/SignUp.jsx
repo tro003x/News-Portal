@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../AuthProvider/AuthProvider";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 import { toast } from 'react-toastify';
-import { LoadingContext } from '../contexts/LoadingContext';
+import { LoadingContext } from '../contexts/LoadingContext.js';
 
 const SignUp = () => {
 
-    const { createUser, setUser } = useContext(AuthContext) || {};
+  const { createUser, setUser, sendEmailVerification, logOut } = useContext(AuthContext) || {};
     const { showLoading, hideLoading } = useContext(LoadingContext) || {};
   const [show, setShow] = useState(false);
 
@@ -33,8 +33,8 @@ const SignUp = () => {
       return;
     }
 
-    // password policy: at least 8 chars, one upper, one lower, one digit, one special
-    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  // password policy (user-specified): at least 8 chars, one upper, one lower, one digit, one special (non-word/non-space)
+  const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
     if (!pwdRegex.test(password)) {
       toast.error('Password must be at least 8 characters and include upper, lower, number and special char');
       return;
@@ -42,18 +42,33 @@ const SignUp = () => {
 
     const fullName = `${firstName} ${lastName}`.trim();
     const seed = encodeURIComponent(email.toLowerCase().trim() || fullName || Date.now());
-    const photoURL = `https://avatars.dicebear.com/api/identicon/${seed}.svg`;
+  const photoURL = `https://api.dicebear.com/7.x/identicon/svg?seed=${seed}`;
 
     try {
       if (showLoading) showLoading();
+      let cred = null;
       if (createUser) {
-        await createUser(email, password);
+        cred = await createUser(email, password);
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       } else {
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       }
-      toast.success('Signed up successfully');
-      navigate('/');
+
+      // send verification email if possible
+      try {
+        if (sendEmailVerification) {
+          await sendEmailVerification(cred?.user);
+          toast.info('Verification email sent. Please check your inbox.');
+        }
+      } catch (ve) {
+        // non-fatal
+        console.warn('sendEmailVerification failed', ve);
+      }
+
+      // Prevent access until email is verified: sign out and redirect to sign-in
+      if (logOut) await logOut();
+      toast.success('Signed up successfully. Please verify your email to continue.');
+      navigate('/auth/signin');
     } catch (err) {
       console.error(err);
       toast.error(err?.message || 'Sign up failed');
@@ -62,8 +77,9 @@ const SignUp = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-100 flex items-start justify-center py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gray-100">
+      <div className="w-11/12 mx-auto flex items-center justify-center py-12">
+        <div className="w-full max-w-md">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-semibold">Create Account</h2>
           <p className="text-sm text-gray-500">
@@ -143,6 +159,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

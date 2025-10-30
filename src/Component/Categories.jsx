@@ -1,5 +1,5 @@
 import React, { use } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 const CategoriesPromise = fetch('/categories.json').then((res)=> res.json());
 

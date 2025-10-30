@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router';
-import { AuthContext } from '../AuthProvider/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
 const Star = ({ className = 'w-4 h-4' }) => (
@@ -116,7 +116,19 @@ const NewsCard = ({ news }) => {
                 </div>
 
                 <div className="md:w-44 w-full md:shrink-0">
-                    <img src={image} alt={title} className="w-full md:h-32 h-48 object-cover rounded" />
+                    <img
+                        src={image}
+                        alt={title}
+                        className="w-full md:h-32 h-48 object-cover rounded"
+                        onError={(e) => {
+                            // Fallback to an inline SVG placeholder if remote image is blocked or returns 406/410
+                            if (e.currentTarget.dataset.fallback !== '1') {
+                                e.currentTarget.dataset.fallback = '1';
+                                const svg = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240'><rect width='100%' height='100%' fill='#e5e7eb'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#6b7280' font-size='16'>Image unavailable</text></svg>`);
+                                e.currentTarget.src = `data:image/svg+xml;charset=utf-8,${svg}`;
+                            }
+                        }}
+                    />
                 </div>
             </div>
         </article>

@@ -51,21 +51,21 @@ const About = () => {
 
       {mission && (
         <section className="mb-6">
-          <h2 className="text-xl font-semibold">Mission</h2>
+          <h2 className="text-secondary text-xl font-semibold">Mission</h2>
           <p className="mt-2 text-gray-800">{mission}</p>
         </section>
       )}
 
       {vision && (
         <section className="mb-6">
-          <h2 className="text-xl font-semibold">Vision</h2>
+          <h2 className="text-secondary text-xl font-semibold">Vision</h2>
           <p className="mt-2 text-gray-800">{vision}</p>
         </section>
       )}
 
       {team.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-xl font-semibold">Team</h2>
+          <h2 className="text-xl  font-semibold">Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
             {team.map((member, i) => (
               <div key={i} className="p-4 border rounded shadow-sm bg-white">

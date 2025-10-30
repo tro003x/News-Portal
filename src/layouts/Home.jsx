@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../Component/Header';
 import BreakingNews from '../Component/BreakingNews';
 import Navbar from '../Component/Navbar';
@@ -17,17 +17,19 @@ const Home = () => {
     return (
         <div>
             <header>
-                <Header />
-                {/* hide latest-marquee (BreakingNews) on news details pages */}
-                {!hideLeftAside && (
-                    <section className='w-11/12 mx-auto my-5'>
-                        <BreakingNews />
-                    </section>
-                )}
-                <nav className='w-11/12 mx-auto my-5'>
-                    <Navbar />
-                </nav>
-            </header>
+                    <div className='w-11/12 mx-auto'>
+                        <Header />
+                    </div>
+                    {/* hide latest-marquee (BreakingNews) on news details pages */}
+                    {!hideLeftAside && (
+                        <section className='w-11/12 mx-auto my-5'>
+                            <BreakingNews />
+                        </section>
+                    )}
+                    <nav className='w-11/12 mx-auto my-5'>
+                        <Navbar />
+                    </nav>
+                </header>
 
            
             <main className='w-11/12 mx-auto my-3 grid grid-cols-1 md:grid-cols-12 min-h-screen gap-6'>

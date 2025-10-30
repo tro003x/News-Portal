@@ -20,7 +20,7 @@
 }
 
 a.active{
-    @apply bg-base-300
+  background-color: var(--color-base-300);
 }
 
 /* Prevent horizontal overflow on small devices caused by fixed widths */
