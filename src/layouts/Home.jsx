@@ -32,23 +32,34 @@ const Home = () => {
                 </header>
 
            
-            <main className='w-11/12 mx-auto my-3 grid grid-cols-1 md:grid-cols-12 min-h-screen gap-6'>
-                {/* left aside hidden on small screens; shows on md+ */}
+            <main className='w-11/12 mx-auto my-3 grid grid-cols-1 md:grid-cols-12 gap-6'>
+                {/* Mobile categories (visible on small screens) */}
                 {!hideLeftAside && (
-                    <aside className='hidden md:block md:col-span-3'>
-                        <div className='sticky top-24 h-[calc(100vh-6rem)] overflow-auto'>
+                    <div className='md:hidden col-span-12'>
+                        <div className='bg-base-100 rounded border border-base-200 p-4'>
+                            <LeftAside />
+                        </div>
+                    </div>
+                )}
+
+                {/* left aside hidden on small screens; sticky on md+ */}
+                {!hideLeftAside && (
+                    <aside className='hidden md:block md:col-span-3 sticky top-24 self-start'>
+                        <div className='max-h-[calc(100vh-6rem)] overflow-auto'>
                             <LeftAside />
                         </div>
                     </aside>
                 )}
 
-                <section className={`main ${mainClass}`}>
-                    <Outlet />
+                <section className={`main ${mainClass} min-h-screen md:min-h-0 md:max-h-[calc(100vh-6rem)] md:overflow-y-auto md:overscroll-contain`}>
+                    <div className='pb-10 pr-1'>
+                        <Outlet />
+                    </div>
                 </section>
 
-                {/* right aside: hidden on small screens */}
-                <aside className='hidden md:block md:col-span-3'>
-                    <div className='sticky top-24 h-[calc(100vh-6rem)] overflow-auto'>
+                {/* right aside: sticky on md+ */}
+                <aside className='hidden md:block md:col-span-3 sticky top-24 self-start'>
+                    <div className='max-h-[calc(100vh-6rem)] overflow-auto'>
                         <RightAside />
                     </div>
                 </aside>
