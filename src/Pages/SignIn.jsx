@@ -13,7 +13,7 @@ const SignIn = () => {
   const [lastEmail, setLastEmail] = useState("");
   const [lastPassword, setLastPassword] = useState("");
   const [formError, setFormError] = useState("");
-  const { setUser, signIn, signInWithGoogle, sendEmailVerification, logOut, sendPasswordResetEmail } = useContext(AuthContext) || {};
+  const { setUser, signIn, sendEmailVerification, logOut, sendPasswordResetEmail } = useContext(AuthContext) || {};
   const { showLoading, hideLoading } = useContext(LoadingContext) || {};
   const navigate = useNavigate();
 
@@ -132,41 +132,9 @@ const SignIn = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    // read remember checkbox from the form
-    const rememberEl = document.querySelector('input[name="remember"]');
-    const remember = !!(rememberEl && rememberEl.checked);
-    try {
-      setChecking(true);
-      const cred = await signInWithGoogle({ remember });
-      const u = cred && cred.user ? cred.user : null;
-      if (u && u.emailVerified === false) {
-        // Extremely unlikely for Google, but keep logic consistent
-        try {
-          if (sendEmailVerification) {
-            await sendEmailVerification(cred.user);
-            toast.info('Verification email sent. Please check your inbox.');
-          }
-  } catch { /* ignore */ }
-  if (logOut) { try { await logOut(); } catch { /* ignore */ } }
-        setUnverified(true);
-        return;
-      }
-      const displayName = (u && (u.displayName || u.name)) || 'there';
-      if (setUser && u) setUser({ name: displayName, email: u.email, photoURL: u.photoURL });
-      toast.success(`Signed in with Google — Hi, ${displayName}`);
-      navigate('/');
-    } catch (err) {
-      // Common Google popup errors: auth/popup-closed-by-user, auth/cancelled-popup-request
-      const code = err && err.code ? err.code : '';
-      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
-        toast.info('Google sign-in was cancelled.');
-      } else {
-        toast.error(err?.message || 'Google sign-in failed');
-      }
-    } finally {
-      setChecking(false);
-    }
+  const handleGoogleSignIn = () => {
+    toast.info('Please signup first.');
+    navigate('/auth/signup');
   };
     return (
       <div className="min-h-screen bg-gray-100">
