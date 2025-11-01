@@ -5,6 +5,7 @@ import BreakingNews from '../Component/BreakingNews';
 import Navbar from '../Component/Navbar';
 import LeftAside from '../Component/Homelayout/LeftAside';
 import RightAside from '../Component/Homelayout/RightAside';
+import MobileCategories from '../Component/Homelayout/MobileCategories';
 
 const Home = () => {
     const location = useLocation();
@@ -33,14 +34,10 @@ const Home = () => {
 
            
             <main className='w-11/12 mx-auto my-3 grid grid-cols-1 md:grid-cols-12 gap-6'>
-                {/* Mobile categories (visible on small screens) */}
-                {!hideLeftAside && (
-                    <div className='md:hidden col-span-12'>
-                        <div className='bg-base-100 rounded border border-base-200 p-4'>
-                            <LeftAside />
-                        </div>
-                    </div>
-                )}
+                {/* Mobile categories menu (always available on small screens) */}
+                <div className='md:hidden col-span-12'>
+                    <MobileCategories />
+                </div>
 
                 {/* left aside hidden on small screens; sticky on md+ */}
                 {!hideLeftAside && (
