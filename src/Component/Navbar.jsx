@@ -8,11 +8,11 @@ const Navbar = () => {
     const { user, setUser, logOut } = useContext(AuthContext) || {};
     const [open, setOpen] = useState(false);
     return (
-        <div className='relative flex items-center'>
+    <div className='relative flex items-center'>
             {/* left column intentionally hidden - do not display user email here */}
 
             {/* center: nav links - hidden on small screens */}
-            <div className='flex-1 flex justify-center'>
+            <div className='flex-1 flex items-center justify-start md:justify-center'>
                 <nav className="hidden md:flex nav gap-6 text-accent items-center justify-center">
                     <NavLink to='/'>Home</NavLink>
                     <NavLink to='/about'>About</NavLink>
@@ -20,7 +20,7 @@ const Navbar = () => {
                 </nav>
 
                 {/* mobile menu button */}
-                <button className='md:hidden p-2' onClick={() => setOpen(!open)} aria-label='menu'>
+                <button className='md:hidden py-2 pr-2 pl-0' onClick={() => setOpen(!open)} aria-label='menu'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>

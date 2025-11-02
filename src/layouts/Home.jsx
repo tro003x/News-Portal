@@ -11,6 +11,8 @@ const Home = () => {
     const location = useLocation();
     // hide left aside on news details pages (path like /news/:id)
     const hideLeftAside = location.pathname.startsWith('/news/');
+    // show mobile categories only on the Home route
+    const showMobileCategories = location.pathname === '/';
 
     // responsive main column classes: full width on small, 6 cols on md, 9 cols when left aside hidden
     const mainClass = hideLeftAside ? 'col-span-12 md:col-span-9' : 'col-span-12 md:col-span-6';
@@ -34,10 +36,12 @@ const Home = () => {
 
            
             <main className='w-11/12 mx-auto my-3 grid grid-cols-1 md:grid-cols-12 gap-6'>
-                {/* Mobile categories menu (always available on small screens) */}
-                <div className='md:hidden col-span-12'>
-                    <MobileCategories />
-                </div>
+                {/* Mobile categories menu (Home page only) */}
+                {showMobileCategories && (
+                    <div className='md:hidden col-span-12'>
+                        <MobileCategories />
+                    </div>
+                )}
 
                 {/* left aside hidden on small screens; sticky on md+ */}
                 {!hideLeftAside && (
