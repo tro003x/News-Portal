@@ -4,6 +4,7 @@ import { FaEye } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { toast } from 'react-toastify';
+import { updateProfile } from 'firebase/auth';
 import { LoadingContext } from '../contexts/LoadingContext.js';
 
 const SignUp = () => {
@@ -23,7 +24,7 @@ const SignUp = () => {
     const email = (fd.get("email") || "").toString().trim();
     const password = (fd.get("password") || "").toString();
 
-    // basic client-side validation
+    // validation
     if (!email) {
       toast.error('Please enter your email');
       return;
@@ -33,7 +34,7 @@ const SignUp = () => {
       return;
     }
 
-  // password policy (user-specified): at least 8 chars, one upper, one lower, one digit, one special (non-word/non-space)
+  // Regex
   const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
     if (!pwdRegex.test(password)) {
       toast.error('Password must be at least 8 characters and include upper, lower, number and special char');
@@ -49,25 +50,31 @@ const SignUp = () => {
       let cred = null;
       if (createUser) {
         cred = await createUser(email, password);
+       
+        try {
+          if (cred?.user) {
+            await updateProfile(cred.user, { displayName: fullName || email, photoURL });
+          }
+        } catch (e) {
+          if (import.meta.env.DEV) console.warn('Profile Update failed', e);
+        }
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       } else {
         if (setUser) setUser({ name: fullName || email, email, photoURL });
       }
 
-      // send verification email if possible
+      // verification email 
       try {
         if (sendEmailVerification) {
           await sendEmailVerification(cred?.user);
           toast.info('Verification email sent. Please check your inbox.');
         }
       } catch (ve) {
-        // non-fatal
-        if (import.meta.env.DEV) console.warn('sendEmailVerification failed', ve);
+        
+        if (import.meta.env.DEV) console.warn('Email Verification Failed', ve);
       }
 
-      // Prevent access until email is verified: sign out and redirect to sign-in
-      if (logOut) await logOut();
-      toast.success('Signed up successfully. Please verify your email to continue.');
+  if (logOut) await logOut();
       navigate('/auth/signin');
     } catch (err) {
       if (import.meta.env.DEV) console.error(err);

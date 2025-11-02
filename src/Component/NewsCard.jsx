@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -63,6 +64,14 @@ const NewsCard = ({ news }) => {
         }
     };
 
+    
+    const rawDate = author.published_date || author.published || news.published_date || '';
+    let displayDate = '';
+    if (rawDate) {
+        const d = new Date(rawDate);
+        displayDate = isNaN(d) ? String(rawDate) : format(d, 'yyyy-MM-dd');
+    }
+
     return (
         <article className="bg-white shadow-sm rounded-md p-4 mb-6">
             {/* header: author, date, share */}
@@ -75,7 +84,7 @@ const NewsCard = ({ news }) => {
                     />
                     <div>
                         <p className="text-sm font-semibold">{author.name || 'Unknown Author'}</p>
-                        <p className="text-xs text-gray-500">{author.published_date || author.published || news.published_date || ''}</p>
+                        <p className="text-xs text-gray-500">{displayDate}</p>
                     </div>
                 </div>
 
@@ -121,7 +130,7 @@ const NewsCard = ({ news }) => {
                         alt={title}
                         className="w-full md:h-32 h-48 object-cover rounded"
                         onError={(e) => {
-                            // Fallback to an inline SVG placeholder if remote image is blocked or returns 406/410
+                            
                             if (e.currentTarget.dataset.fallback !== '1') {
                                 e.currentTarget.dataset.fallback = '1';
                                 const svg = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240'><rect width='100%' height='100%' fill='#e5e7eb'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#6b7280' font-size='16'>Image unavailable</text></svg>`);

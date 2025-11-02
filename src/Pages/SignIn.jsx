@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { LoadingContext } from '../contexts/LoadingContext.js';
@@ -13,7 +14,7 @@ const SignIn = () => {
   const [lastEmail, setLastEmail] = useState("");
   const [lastPassword, setLastPassword] = useState("");
   const [formError, setFormError] = useState("");
-  const { setUser, signIn, sendEmailVerification, logOut, sendPasswordResetEmail } = useContext(AuthContext) || {};
+  const { setUser, signIn, signInWithGoogle, sendEmailVerification, logOut, sendPasswordResetEmail } = useContext(AuthContext) || {};
   const { showLoading, hideLoading } = useContext(LoadingContext) || {};
   const navigate = useNavigate();
 
@@ -33,10 +34,10 @@ const SignIn = () => {
       return;
     }
 
-  // password policy (user-specified): at least 8 chars, one upper, one lower, one digit, one special (non-word/non-space)
+  // Regex
   const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
     if (!pwdRegex.test(password)) {
-      toast.warn('Make sure your password meets strength requirements (8+ chars, upper/lower/number/special)');
+      toast.warn('Password should Contain (8+ chars, upper/lower/number/special)');
     }
 
     try {
@@ -48,7 +49,7 @@ const SignIn = () => {
       const cred = await signIn(email, password, { remember });
       const u = cred && cred.user ? cred.user : null;
       if (u && !u.emailVerified) {
-        // trigger verification email and sign the user out immediately
+        
         try {
           if (sendEmailVerification) {
             await sendEmailVerification(cred.user);
@@ -69,7 +70,7 @@ const SignIn = () => {
   const fullName = email.split('@')[0];
   const seed = encodeURIComponent(email.toLowerCase().trim() || fullName || Date.now());
   const photoURL = `https://api.dicebear.com/7.x/identicon/svg?seed=${seed}`;
-  // prefer auth provider displayName if available
+  
   const displayName = (u && (u.displayName || u.name)) || fullName;
   if (setUser) setUser({ name: displayName, email, photoURL });
   toast.success(`Signed in successfully — Hi, ${displayName}`);
@@ -77,7 +78,7 @@ const SignIn = () => {
     } catch (err) {
       const code = err && err.code ? err.code : null;
       if (code === 'auth/wrong-password' || code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
-        // Show inline error under password field as requested
+        
         setFormError('User name or Password invalid.');
       } else if (code === 'auth/too-many-requests') {
         toast.error('Too many attempts. Try again later.');
@@ -132,9 +133,29 @@ const SignIn = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    toast.info('Please signup first.');
-    navigate('/auth/signup');
+  const handleGoogleSignIn = async () => {
+    // read remember checkbox from the form
+    const rememberEl = document.querySelector('input[name="remember"]');
+    const remember = !!(rememberEl && rememberEl.checked);
+    try {
+      setChecking(true);
+      const cred = await signInWithGoogle({ remember });
+      const u = cred && cred.user ? cred.user : null;
+      // For Google users, email is typically verified already
+      const displayName = (u && (u.displayName || u.name)) || (u?.email?.split('@')[0]) || 'there';
+      if (setUser && u) setUser({ name: displayName, email: u.email, photoURL: u.photoURL });
+      toast.success(`Signed in with Google — Hi, ${displayName}`);
+      navigate('/');
+    } catch (err) {
+      const code = err && err.code ? err.code : '';
+      if (code === 'Closed-by-user' || code === 'Request cancelled') {
+        toast.info('Google sign-in was cancelled.');
+      } else {
+        toast.error(err?.message || 'Google sign-in failed');
+      }
+    } finally {
+      setChecking(false);
+    }
   };
     return (
       <div className="min-h-screen bg-gray-100">
@@ -196,8 +217,9 @@ const SignIn = () => {
             <button type="submit" disabled={checking} className="w-full bg-gray-800 text-white py-2 rounded mt-4">{checking ? 'Signing in…' : 'Sign In'}</button>
 
             <div className="mt-3">
-              <button type="button" onClick={handleGoogleSignIn} disabled={checking} className="w-full btn btn-outline">
-                Continue with Google
+              <button type="button" onClick={handleGoogleSignIn} disabled={checking} className="w-full btn btn-outline flex items-center justify-center gap-2">
+                <FcGoogle size={20} />
+                <span>Continue with Google</span>
               </button>
             </div>
 
