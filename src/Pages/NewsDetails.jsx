@@ -1,27 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 
 const NewsDetails = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { user, loading: authLoading } = useContext(AuthContext) || {};
-  const navigate = useNavigate();
-
   useEffect(() => {
-    // when auth is still initializing, wait
-    if (authLoading) return;
-
-    // if auth finished and user is not signed in, redirect to signin with alert
-    if (!user) {
-      toast.info('Please Sign In to see news details');
-      navigate('/auth/signin');
-      return;
-    }
-
     let mounted = true;
     setLoading(true);
     fetch('/news.json')
@@ -37,9 +22,9 @@ const NewsDetails = () => {
     return () => {
       mounted = false;
     };
-  }, [id, authLoading, user, navigate]);
+  }, [id]);
 
-  if (authLoading || loading)
+  if (loading)
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />

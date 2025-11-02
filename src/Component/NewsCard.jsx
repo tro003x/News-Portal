@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-import { toast } from 'react-toastify';
 
 const Star = ({ className = 'w-4 h-4' }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className={className}>
@@ -25,7 +23,6 @@ const Share = ({ className = 'w-5 h-5' }) => (
 
 const NewsCard = ({ news }) => {
     const navigate = useNavigate();
-    const { user, loading } = useContext(AuthContext) || {};
 
     if (!news) return null;
 
@@ -37,31 +34,8 @@ const NewsCard = ({ news }) => {
     const rating = (news.rating && news.rating.number) || news.rating || 0;
 
     const handleReadMore = (id) => {
-        if (loading) {
-            const toastId = 'auth-checking';
-            toast.info('Checking authentication...', { toastId, autoClose: false });
-            const check = setInterval(() => {
-                if (!loading) {
-                    clearInterval(check);
-                    toast.dismiss(toastId);
-                    if (user) {
-                        navigate(`/news/${id}`);
-                    } else {
-                        toast.info('Please Sign In to see news details');
-                        navigate('/auth/signin');
-                    }
-                }
-            }, 200);
-
-            return;
-        }
-
-        if (user) {
-            navigate(`/news/${id}`);
-        } else {
-            toast.info('Please Sign In to see news details');
-            navigate('/auth/signin');
-        }
+        // Always allow navigating to details regardless of auth state
+        navigate(`/news/${id}`);
     };
 
     
