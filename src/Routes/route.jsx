@@ -8,6 +8,9 @@ import NewsDetails from "../Pages/NewsDetails";
 import AuthLayout from "../layouts/AuthLayout";
 import Blog from "../Pages/BlogPage.jsx";
 import About from "../Pages/About.jsx";
+import GettingStarted from "../Pages/resources/GettingStarted";
+import FAQ from "../Pages/resources/FAQ";
+import Support from "../Pages/resources/Support";
 
 
 const router = createBrowserRouter([
@@ -37,6 +40,19 @@ const router = createBrowserRouter([
             {
                 path: 'news/:id',
                 element: <NewsDetails></NewsDetails>
+            }
+            ,
+            {
+                path: 'resources/getting-started',
+                element: <GettingStarted />
+            },
+            {
+                path: 'resources/faq',
+                element: <FAQ />
+            },
+            {
+                path: 'resources/support',
+                element: <Support />
             }
          
         ]

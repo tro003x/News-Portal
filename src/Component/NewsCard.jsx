@@ -1,6 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import industryImg from '../assets/industry.svg';
 
 const Star = ({ className = 'w-4 h-4' }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className={className}>
@@ -29,7 +30,15 @@ const NewsCard = ({ news }) => {
     const author = news.author || {};
     const title = news.title || 'Untitled';
     const details = news.details || '';
-    const image = news.image_url || news.thumbnail_url || '';
+    const pickFallback = () => {
+        const t = (news.title || '').toLowerCase();
+        if (t.includes('raw material') || t.includes('export') || t.includes('inflation') || t.includes('industry')) {
+            return industryImg;
+        }
+        return industryImg; // default for now
+    };
+
+    const image = news.image_url || news.thumbnail_url || pickFallback();
     const views = news.total_view || news.views || 0;
     const rating = (news.rating && news.rating.number) || news.rating || 0;
 
@@ -104,11 +113,9 @@ const NewsCard = ({ news }) => {
                         alt={title}
                         className="w-full md:h-32 h-48 object-cover rounded"
                         onError={(e) => {
-                            
                             if (e.currentTarget.dataset.fallback !== '1') {
                                 e.currentTarget.dataset.fallback = '1';
-                                const svg = encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='240'><rect width='100%' height='100%' fill='#e5e7eb'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#6b7280' font-size='16'>Image unavailable</text></svg>`);
-                                e.currentTarget.src = `data:image/svg+xml;charset=utf-8,${svg}`;
+                                e.currentTarget.src = pickFallback();
                             }
                         }}
                     />

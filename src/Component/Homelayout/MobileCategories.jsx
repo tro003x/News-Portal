@@ -1,7 +1,7 @@
 import React, { use } from 'react';
 import { NavLink } from 'react-router-dom';
 
-// Reuse the same runtime data approach as Categories component
+
 const CategoriesPromise = fetch('/categories.json').then((res) => res.json());
 
 const MobileCategories = () => {

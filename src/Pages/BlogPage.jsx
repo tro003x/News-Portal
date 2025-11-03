@@ -1,15 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(null);
-  const { user, loading: authLoading } = useContext(AuthContext) || {};
-  const navigate = useNavigate();
+  
 
   useEffect(() => {
     let mounted = true;
@@ -45,17 +41,7 @@ const BlogPage = () => {
                 <div className="text-sm text-gray-500">{post.author} • {post.date}</div>
               </div>
               <button
-                onClick={() => {
-                  
-                  if (authLoading) return;
-                  
-                  if (!user) {
-                    toast.info('Please Sign In to read the full blog post');
-                    navigate('/auth/signin');
-                    return;
-                  }
-                  setOpen(open === post.id ? null : post.id);
-                }}
+                onClick={() => setOpen(open === post.id ? null : post.id)}
                 className="btn btn-secondary btn-ghost btn-sm"
               >
                 {open === post.id ? 'Hide' : 'Read more'}

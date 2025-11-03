@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useLoaderData, useParams } from "react-router";
 import NewsCard from "../Component/NewsCard";
 import Pagination from "../Component/Pagination";
+import { PaginationContext } from "../contexts/PaginationContext";
 
 const CategoryNews = () => {
   const data = useLoaderData();
@@ -40,6 +41,14 @@ const CategoryNews = () => {
     // Scroll up a bit on page change for better UX
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page]);
+
+  // publish pagination info to context so layout/ads can react (e.g., last page adjustments)
+  const [, setPaginationInfo] = useContext(PaginationContext) || [];
+  useEffect(() => {
+    if (typeof setPaginationInfo === 'function') {
+      setPaginationInfo({ page, totalPages });
+    }
+  }, [page, totalPages, setPaginationInfo]);
   return (
     <div >
       <h2 className="font-bold mb-3 ">

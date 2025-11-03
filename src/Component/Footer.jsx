@@ -34,17 +34,59 @@ const Footer = () => {
         {/* Explore */}
         <nav>
           <h6 className="footer-title">Explore</h6>
-          <NavLink to="/" className="link link-hover">Home</NavLink>
-          <NavLink to="/about" className="link link-hover">About</NavLink>
-          <NavLink to="/blog" className="link link-hover">Blog</NavLink>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `link link-hover ${isActive ? 'text-white font-semibold' : 'opacity-90 hover:text-white'}`
+            }
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `link link-hover ${isActive ? 'text-white font-semibold' : 'opacity-90 hover:text-white'}`
+            }
+          >
+            About
+          </NavLink>
+          <NavLink
+            to="/blog"
+            className={({ isActive }) =>
+              `link link-hover ${isActive ? 'text-white font-semibold' : 'opacity-90 hover:text-white'}`
+            }
+          >
+            Blog
+          </NavLink>
         </nav>
 
         {/* Resources */}
         <nav>
           <h6 className="footer-title">Resources</h6>
-          <a className="link link-hover" href="#">Getting started</a>
-          <a className="link link-hover" href="#">FAQ</a>
-          <a className="link link-hover" href="#">Support</a>
+          <NavLink
+            to="/resources/getting-started"
+            className={({ isActive }) =>
+              `link link-hover ${isActive ? 'text-white font-semibold' : 'opacity-90 hover:text-white'}`
+            }
+          >
+            Getting started
+          </NavLink>
+          <NavLink
+            to="/resources/faq"
+            className={({ isActive }) =>
+              `link link-hover ${isActive ? 'text-white font-semibold' : 'opacity-90 hover:text-white'}`
+            }
+          >
+            FAQ
+          </NavLink>
+          <NavLink
+            to="/resources/support"
+            className={({ isActive }) =>
+              `link link-hover ${isActive ? 'text-white font-semibold' : 'opacity-90 hover:text-white'}`
+            }
+          >
+            Support
+          </NavLink>
         </nav>
 
         {/* Newsletter */}
