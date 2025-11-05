@@ -1,8 +1,7 @@
 import React from 'react';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
-// Pagination component with truncated page list and Prev/Next controls
-// Props: totalItems (number), pageSize (number), currentPage (number), onPageChange (fn)
+
 const Pagination = ({ totalItems = 0, pageSize = 5, currentPage = 1, onPageChange }) => {
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
@@ -18,11 +17,11 @@ const Pagination = ({ totalItems = 0, pageSize = 5, currentPage = 1, onPageChang
     const pages = totalPages;
     if (pages <= 6) return makeRange(1, pages);
 
-    const tailSize = 3; // always show last three: e.g., 10, 11, 12
-    const windowSize = 3; // sliding window at the front: e.g., 1, 2, 3 then 2, 3, 4 ...
+    const tailSize = 3; 
+    const windowSize = 3; 
 
     const c = clamp(currentPage, 1, pages);
-    const tailStart = pages - tailSize + 1; // 10 for 12 pages
+    const tailStart = pages - tailSize + 1;
 
     // Determine front window start so that current page is the middle item
     // and it slides like: [1,2,3] -> click 3 => [2,3,4] -> click 4 => [3,4,5]

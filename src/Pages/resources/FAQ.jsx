@@ -3,7 +3,7 @@ import { faqs } from '../../data/resources';
 
 const FAQ = () => {
   return (
-    <div>
+    <div className="p-4 sm:p-0">
       <h1 className="text-2xl font-bold mb-4">FAQ</h1>
       <div className="join join-vertical w-full">
         {faqs.map((item, idx) => (

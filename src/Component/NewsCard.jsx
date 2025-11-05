@@ -35,7 +35,7 @@ const NewsCard = ({ news }) => {
         if (t.includes('raw material') || t.includes('export') || t.includes('inflation') || t.includes('industry')) {
             return industryImg;
         }
-        return industryImg; // default for now
+        return industryImg; 
     };
 
     const image = news.image_url || news.thumbnail_url || pickFallback();
@@ -43,7 +43,7 @@ const NewsCard = ({ news }) => {
     const rating = (news.rating && news.rating.number) || news.rating || 0;
 
     const handleReadMore = (id) => {
-        // Always allow navigating to details regardless of auth state
+        
         navigate(`/news/${id}`);
     };
 

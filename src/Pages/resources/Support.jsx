@@ -3,7 +3,7 @@ import { supportTopics } from '../../data/resources';
 
 const Support = () => {
   return (
-    <div>
+    <div className="p-4 sm:p-0">
       <h1 className="text-2xl font-bold mb-4">Support</h1>
       <div className="space-y-4">
         {supportTopics.map((t) => (

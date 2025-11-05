@@ -3,7 +3,7 @@ import { gettingStartedSteps } from '../../data/resources';
 
 const GettingStarted = () => {
   return (
-    <div>
+    <div className="p-4 sm:p-0">
       <h1 className="text-2xl font-bold mb-4">Getting started</h1>
       <ol className="space-y-4 list-decimal list-inside">
         {gettingStartedSteps.map((step) => (

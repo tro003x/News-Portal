@@ -1,13 +1,37 @@
 import React, { useContext } from 'react';
 import { format } from 'date-fns';
 import CategoriesMenu from './CategoriesMenu';
-import userIcon from '../assets/user.png';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
 const TopBar = () => {
   const { user, setUser, logOut } = useContext(AuthContext) || {};
+
+  const fallbackAvatar = user
+    ? `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(
+        user.displayName || user.email || 'user'
+      )}`
+    : null;
+
+  // Normalize Google photo URL to include a size parameter so the image resolves reliably
+  const normalizedPhotoURL = (() => {
+    const raw = user?.photoURL;
+    if (!raw) return null;
+    try {
+      const u = new URL(raw);
+      if (u.hostname.endsWith('googleusercontent.com')) {
+        // Prefer an explicit size; many Google URLs accept `sz` query
+        if (!u.searchParams.has('sz')) {
+          u.searchParams.set('sz', '96');
+        }
+        return u.toString();
+      }
+      return raw;
+    } catch {
+      return raw;
+    }
+  })();
 
   return (
     <div className="w-11/12 mx-auto flex items-center justify-between py-0">
@@ -17,7 +41,21 @@ const TopBar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <img src={user?.photoURL || userIcon} alt="user" className="w-8 h-8 rounded-full" />
+        {user && (
+          <img
+            src={normalizedPhotoURL || fallbackAvatar}
+            alt={user.displayName || 'User'}
+            className="w-8 h-8 rounded-full"
+            onError={(e) => {
+              const current = e.currentTarget.getAttribute('src') || '';
+              if (normalizedPhotoURL && current === normalizedPhotoURL && fallbackAvatar) {
+                e.currentTarget.src = fallbackAvatar;
+                return;
+              }
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        )}
         {user ? (
           <button
             onClick={async () => {

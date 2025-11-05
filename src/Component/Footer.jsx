@@ -3,12 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { FaGithub, FaInstagram, FaTwitter } from 'react-icons/fa';
 import logo from '../assets/logo.png';
 
-// Footer redesigned to match the provided screenshot: brand + socials, Explore, Resources, Newsletter.
+
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <div className="bg-neutral text-neutral-content rounded-box">
-      <footer className="footer sm:footer-horizontal p-10">
+      <footer className="footer sm:footer-horizontal p-6 sm:p-10 gap-6">
         {/* Brand + Socials */}
         <aside>
           <div className="flex items-center gap-3 mb-2">
@@ -93,7 +93,7 @@ const Footer = () => {
         <form>
           <h6 className="footer-title">Newsletter</h6>
           <p className="opacity-80 mb-2 max-w-xs">Get updates, no spam.</p>
-          <fieldset className="form-control w-80 max-w-xs">
+          <fieldset className="form-control w-full sm:w-80 max-w-full sm:max-w-xs">
             <label className="label" htmlFor="newsletter-email">
               <span className="label-text text-neutral-content">Your email</span>
             </label>
